@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DVI Station — Sécurité médicamenteuse intelligente</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --dark-blue: #1F3658;
+  --med-blue: #3D9BE9;
+  --cyan: #10AFE2;
+  --light-blue: #74D2F0;
+  --very-light: #EAF6FC;
+  --bg-light: #F4FAFE;
+  --white: #FFFFFF;
+  --text-dark: #1F3658;
+  --text-med: #556680;
+  --text-light: #8A9BB5;
+  --accent-red: #E74C3C;
+  --border: #E2EAF0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--text-dark);
+  line-height: 1.6;
+  background: var(--white);
+  overflow-x: hidden;
+}
+
+/* ===== NAVIGATION ===== */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  transition: box-shadow 0.3s;
+}
+nav.scrolled { box-shadow: 0 2px 20px rgba(31,54,88,0.08); }
+.nav-inner {
+  max-width: 1200px; margin: 0 auto; padding: 0 2rem;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 70px;
+}
+.nav-logo {
+  display: flex; align-items: center; gap: 0.5rem;
+  text-decoration: none; color: var(--dark-blue);
+  font-weight: 700; font-size: 1.25rem;
+}
+.nav-logo svg { width: 32px; height: 32px; }
+.nav-logo span { color: var(--cyan); font-weight: 300; }
+.nav-links { display: flex; align-items: center; gap: 2rem; }
+.nav-links a {
+  text-decoration: none; color: var(--text-med);
+  font-size: 0.9rem; font-weight: 500;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--cyan); }
+.lang-switch {
+  display: flex; align-items: center; gap: 0.25rem;
+  background: var(--very-light); border-radius: 20px; padding: 3px;
+  margin-left: 1rem;
+}
+.lang-btn {
+  padding: 5px 12px; border-radius: 16px; border: none;
+  font-size: 0.8rem; font-weight: 600; cursor: pointer;
+  background: transparent; color: var(--text-med);
+  transition: all 0.2s;
+}
+.lang-btn.active {
+  background: var(--dark-blue); color: var(--white);
+}
+.btn-nav {
+  padding: 10px 24px; border-radius: 8px;
+  background: var(--cyan); color: white;
+  text-decoration: none; font-size: 0.9rem; font-weight: 600;
+  transition: all 0.2s;
+}
+.btn-nav:hover { background: var(--med-blue); transform: translateY(-1px); }
+
+/* ===== HERO ===== */
+.hero {
+  padding: 140px 2rem 80px;
+  background: linear-gradient(135deg, var(--dark-blue) 0%, #162B47 50%, var(--dark-blue) 100%);
+  position: relative; overflow: hidden; min-height: 90vh;
+  display: flex; align-items: center;
+}
+.hero::before {
+  content: ''; position: absolute; top: -50%; right: -20%;
+  width: 800px; height: 800px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(16,175,226,0.12) 0%, transparent 70%);
+}
+.hero::after {
+  content: ''; position: absolute; bottom: -30%; left: -10%;
+  width: 600px; height: 600px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(61,155,233,0.08) 0%, transparent 70%);
+}
+.hero-inner {
+  max-width: 1200px; margin: 0 auto; position: relative; z-index: 2;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
+}
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  background: rgba(16,175,226,0.15); border: 1px solid rgba(116,210,240,0.3);
+  border-radius: 20px; padding: 6px 16px; margin-bottom: 1.5rem;
+  font-size: 0.8rem; color: var(--light-blue); font-weight: 500;
+}
+.hero-badge-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--cyan); animation: pulse 2s infinite;
+}
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+.hero h1 {
+  font-size: 3.2rem; font-weight: 800; line-height: 1.15;
+  color: var(--white); margin-bottom: 1.5rem;
+}
+.hero h1 em {
+  font-style: normal;
+  background: linear-gradient(135deg, var(--cyan), var(--light-blue));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero p {
+  font-size: 1.15rem; color: #8BA3C0; line-height: 1.7;
+  margin-bottom: 2rem; max-width: 500px;
+}
+.hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+.btn-primary {
+  padding: 14px 32px; border-radius: 8px;
+  background: var(--cyan); color: white;
+  text-decoration: none; font-size: 1rem; font-weight: 600;
+  transition: all 0.3s; border: none; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 0.5rem;
+}
+.btn-primary:hover { background: var(--med-blue); transform: translateY(-2px); box-shadow: 0 8px 25px rgba(16,175,226,0.3); }
+.btn-secondary {
+  padding: 14px 32px; border-radius: 8px;
+  background: transparent; color: var(--light-blue);
+  text-decoration: none; font-size: 1rem; font-weight: 500;
+  border: 1px solid rgba(116,210,240,0.3);
+  transition: all 0.3s; cursor: pointer;
+}
+.btn-secondary:hover { border-color: var(--light-blue); background: rgba(116,210,240,0.08); }
+
+.hero-visual {
+  display: flex; justify-content: center; align-items: center;
+}
+.hero-card {
+  background: rgba(255,255,255,0.06); backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.1); border-radius: 16px;
+  padding: 2rem; width: 100%; max-width: 440px;
+}
+.hero-card-header {
+  display: flex; align-items: center; gap: 0.75rem;
+  margin-bottom: 1.5rem; padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.hero-card-icon {
+  width: 48px; height: 48px; border-radius: 12px;
+  background: linear-gradient(135deg, var(--cyan), var(--med-blue));
+  display: flex; align-items: center; justify-content: center;
+  color: white; font-size: 1.2rem; font-weight: 700;
+}
+.hero-card-title { font-size: 1.1rem; color: var(--white); font-weight: 600; }
+.hero-card-sub { font-size: 0.8rem; color: #8BA3C0; }
+.stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.stat-item {
+  background: rgba(255,255,255,0.05); border-radius: 10px; padding: 1rem;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+.stat-value {
+  font-size: 1.8rem; font-weight: 800; color: var(--cyan); line-height: 1;
+  margin-bottom: 0.3rem;
+}
+.stat-label { font-size: 0.75rem; color: #8BA3C0; }
+.stat-item.highlight { border-color: rgba(16,175,226,0.3); }
+.stat-item.highlight .stat-value { color: var(--light-blue); }
+
+/* ===== SECTIONS ===== */
+section { padding: 100px 2rem; }
+.section-inner { max-width: 1200px; margin: 0 auto; }
+.section-tag {
+  font-size: 0.8rem; font-weight: 600; color: var(--cyan);
+  letter-spacing: 2px; text-transform: uppercase; margin-bottom: 0.75rem;
+}
+.section-title {
+  font-size: 2.5rem; font-weight: 800; color: var(--dark-blue);
+  line-height: 1.2; margin-bottom: 1rem;
+}
+.section-desc {
+  font-size: 1.1rem; color: var(--text-med); max-width: 600px;
+  line-height: 1.7; margin-bottom: 3rem;
+}
+
+/* Problem section */
+.problem-section { background: var(--bg-light); }
+.problem-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2rem; }
+.problem-card {
+  background: var(--white); border-radius: 12px; padding: 2rem;
+  border: 1px solid var(--border);
+  transition: all 0.3s;
+}
+.problem-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(31,54,88,0.08); }
+.problem-icon {
+  width: 48px; height: 48px; border-radius: 10px; margin-bottom: 1.25rem;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem;
+}
+.problem-icon.red { background: #FEE2E2; color: var(--accent-red); }
+.problem-icon.orange { background: #FEF3C7; color: #D97706; }
+.problem-icon.yellow { background: #FEF9C3; color: #CA8A04; }
+.problem-card h3 {
+  font-size: 1.1rem; font-weight: 700; color: var(--dark-blue);
+  margin-bottom: 0.75rem;
+}
+.problem-card p { font-size: 0.9rem; color: var(--text-med); line-height: 1.6; }
+
+/* Solution section */
+.solution-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;
+  margin-bottom: 3rem;
+}
+.solution-card {
+  background: var(--white); border-radius: 14px; padding: 2rem;
+  border: 1px solid var(--border);
+  position: relative; overflow: hidden;
+  transition: all 0.3s;
+}
+.solution-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(31,54,88,0.1); }
+.solution-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+}
+.solution-card:nth-child(1)::before { background: var(--cyan); }
+.solution-card:nth-child(2)::before { background: var(--med-blue); }
+.solution-card:nth-child(3)::before { background: var(--dark-blue); }
+.solution-num {
+  width: 52px; height: 52px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem; font-weight: 800; color: var(--white);
+  margin-bottom: 1.25rem;
+}
+.solution-card:nth-child(1) .solution-num { background: var(--cyan); }
+.solution-card:nth-child(2) .solution-num { background: var(--med-blue); }
+.solution-card:nth-child(3) .solution-num { background: var(--dark-blue); }
+.solution-card h3 {
+  font-size: 1.15rem; font-weight: 700; color: var(--dark-blue);
+  margin-bottom: 0.75rem;
+}
+.solution-card p { font-size: 0.9rem; color: var(--text-med); line-height: 1.7; }
+
+/* How it works */
+.how-section { background: var(--dark-blue); color: var(--white); }
+.how-section .section-tag { color: var(--light-blue); }
+.how-section .section-title { color: var(--white); }
+.how-section .section-desc { color: #8BA3C0; }
+.steps-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; }
+.step-card {
+  text-align: center; position: relative;
+}
+.step-num {
+  width: 64px; height: 64px; border-radius: 50%; margin: 0 auto 1.25rem;
+  background: rgba(16,175,226,0.15); border: 2px solid rgba(116,210,240,0.3);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem; font-weight: 800; color: var(--cyan);
+}
+.step-card h3 {
+  font-size: 1rem; font-weight: 700; color: var(--white);
+  margin-bottom: 0.5rem;
+}
+.step-card p { font-size: 0.85rem; color: #8BA3C0; line-height: 1.6; }
+
+/* Benefits */
+.benefits-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+.benefit-card {
+  background: var(--white); border-radius: 12px; padding: 1.75rem;
+  border: 1px solid var(--border); text-align: center;
+  transition: all 0.3s;
+}
+.benefit-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(31,54,88,0.08); border-color: var(--cyan); }
+.benefit-icon {
+  width: 56px; height: 56px; border-radius: 14px; margin: 0 auto 1rem;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem;
+}
+.benefit-icon.b1 { background: #E0F7FA; color: #00838F; }
+.benefit-icon.b2 { background: #E8F5E9; color: #2E7D32; }
+.benefit-icon.b3 { background: #FFF3E0; color: #E65100; }
+.benefit-icon.b4 { background: #E8EAF6; color: #283593; }
+.benefit-icon.b5 { background: #FCE4EC; color: #AD1457; }
+.benefit-icon.b6 { background: #F3E5F5; color: #6A1B9A; }
+.benefit-icon.b7 { background: #E0F2F1; color: #00695C; }
+.benefit-icon.b8 { background: #FFF8E1; color: #F57F17; }
+.benefit-card h3 {
+  font-size: 0.95rem; font-weight: 700; color: var(--dark-blue);
+  margin-bottom: 0.5rem;
+}
+.benefit-card p { font-size: 0.8rem; color: var(--text-med); line-height: 1.5; }
+
+/* CTA */
+.cta-section {
+  background: linear-gradient(135deg, var(--dark-blue), #162B47);
+  text-align: center;
+}
+.cta-section .section-title { color: var(--white); max-width: 700px; margin: 0 auto 1rem; }
+.cta-section .section-desc { color: #8BA3C0; max-width: 600px; margin: 0 auto 2.5rem; }
+.cta-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+/* Footer */
+footer {
+  background: #0F1D2E; padding: 60px 2rem 30px; color: #8BA3C0;
+}
+.footer-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 3rem;
+}
+.footer-logo { font-size: 1.2rem; font-weight: 700; color: var(--white); margin-bottom: 1rem; }
+.footer-logo span { color: var(--cyan); font-weight: 300; }
+footer p { font-size: 0.85rem; line-height: 1.7; margin-bottom: 0.5rem; }
+footer h4 { color: var(--white); font-size: 0.9rem; margin-bottom: 1rem; font-weight: 600; }
+footer a { color: #8BA3C0; text-decoration: none; transition: color 0.2s; }
+footer a:hover { color: var(--cyan); }
+.footer-links { list-style: none; }
+.footer-links li { margin-bottom: 0.5rem; }
+.footer-links a { font-size: 0.85rem; }
+.footer-bottom {
+  max-width: 1200px; margin: 2rem auto 0; padding-top: 2rem;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  font-size: 0.8rem; text-align: center;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .hero-inner { grid-template-columns: 1fr; text-align: center; }
+  .hero h1 { font-size: 2.2rem; }
+  .hero p { max-width: 100%; }
+  .hero-actions { justify-content: center; }
+  .hero-visual { display: none; }
+  .problem-grid, .solution-grid, .steps-grid, .benefits-grid { grid-template-columns: 1fr; }
+  .footer-inner { grid-template-columns: 1fr; }
+  .nav-links a:not(.btn-nav) { display: none; }
+  .section-title { font-size: 1.8rem; }
+}
+@media (min-width: 769px) and (max-width: 1024px) {
+  .problem-grid, .benefits-grid { grid-template-columns: repeat(2, 1fr); }
+  .steps-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* Scroll animations */
+.fade-up {
+  opacity: 0; transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.fade-up.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#1F3658"/><path d="M8 16L12 12L16 16L20 10L24 14" stroke="#10AFE2" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="24" cy="14" r="2" fill="#74D2F0"/></svg>
+      DVI <span>Station</span>
+    </a>
+    <div class="nav-links">
+      <a href="#problem" data-i18n="nav_problem">Problématique</a>
+      <a href="#solution" data-i18n="nav_solution">Solution</a>
+      <a href="#how" data-i18n="nav_how">Fonctionnement</a>
+      <a href="#benefits" data-i18n="nav_benefits">Bénéfices</a>
+      <div class="lang-switch">
+        <button class="lang-btn active" onclick="setLang('fr')">FR</button>
+        <button class="lang-btn" onclick="setLang('en')">EN</button>
+      </div>
+      <a href="#contact" class="btn-nav" data-i18n="nav_demo">Demander une démo</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero" id="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-badge">
+        <span class="hero-badge-dot"></span>
+        <span data-i18n="hero_badge">Technologie prête pour le marché</span>
+      </div>
+      <h1 data-i18n="hero_title">La sécurité médicamenteuse, <em>réinventée.</em></h1>
+      <p data-i18n="hero_desc">DVI Station automatise la double vérification indépendante au bloc opératoire, assurant une traçabilité complète des médicaments et la conformité réglementaire.</p>
+      <div class="hero-actions">
+        <a href="#contact" class="btn-primary" data-i18n="hero_cta1">Demander une démonstration →</a>
+        <a href="#solution" class="btn-secondary" data-i18n="hero_cta2">Découvrir la solution</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-card">
+        <div class="hero-card-header">
+          <div class="hero-card-icon">DVI</div>
+          <div>
+            <div class="hero-card-title" data-i18n="hero_card_title">Vérification en temps réel</div>
+            <div class="hero-card-sub" data-i18n="hero_card_sub">Vision par ordinateur</div>
+          </div>
+        </div>
+        <div class="stat-grid">
+          <div class="stat-item highlight">
+            <div class="stat-value">100%</div>
+            <div class="stat-label" data-i18n="stat1">Traçabilité</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">&lt;3s</div>
+            <div class="stat-label" data-i18n="stat2">Scan & vérification</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">0</div>
+            <div class="stat-label" data-i18n="stat3">Saisie manuelle</div>
+          </div>
+          <div class="stat-item highlight">
+            <div class="stat-value">24/7</div>
+            <div class="stat-label" data-i18n="stat4">Suivi continu</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Problem -->
+<section class="problem-section" id="problem">
+  <div class="section-inner">
+    <div class="section-tag" data-i18n="problem_tag">PROBLÉMATIQUE</div>
+    <div class="section-title fade-up" data-i18n="problem_title">Les erreurs médicamenteuses : un risque réel et documenté</div>
+    <div class="section-desc fade-up" data-i18n="problem_desc">Au bloc opératoire, la double vérification indépendante est rarement réalisée. Les conséquences peuvent être graves.</div>
+    <div class="problem-grid">
+      <div class="problem-card fade-up">
+        <div class="problem-icon red">⚠</div>
+        <h3 data-i18n="prob1_title">Absence de 2e vérificateur</h3>
+        <p data-i18n="prob1_desc">Le deuxième professionnel requis pour confirmer le médicament et la dose est rarement disponible au moment critique.</p>
+      </div>
+      <div class="problem-card fade-up">
+        <div class="problem-icon orange">⚗</div>
+        <h3 data-i18n="prob2_title">Confusion de médicaments</h3>
+        <p data-i18n="prob2_desc">Les fioles d'anesthésie ont des noms, formes et couleurs similaires, multipliant les risques de confusion.</p>
+      </div>
+      <div class="problem-card fade-up">
+        <div class="problem-icon yellow">📋</div>
+        <h3 data-i18n="prob3_title">Traçabilité manuelle</h3>
+        <p data-i18n="prob3_desc">Les formulaires papier et signatures manuelles créent des lacunes dans le suivi et la conformité réglementaire.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Solution -->
+<section id="solution">
+  <div class="section-inner">
+    <div class="section-tag" data-i18n="sol_tag">SOLUTION</div>
+    <div class="section-title fade-up" data-i18n="sol_title">Trois modes pour couvrir l'ensemble du circuit médicamenteux</div>
+    <div class="section-desc fade-up" data-i18n="sol_desc">DVI Station s'intègre naturellement dans le flux de travail clinique, sans perturber les pratiques existantes.</div>
+    <div class="solution-grid">
+      <div class="solution-card fade-up">
+        <div class="solution-num">1</div>
+        <h3 data-i18n="sol1_title">Cart Refill</h3>
+        <p data-i18n="sol1_desc">Validation et suivi immédiats des médicaments lors du réapprovisionnement du chariot. Chaque fiole est scannée et vérifiée automatiquement.</p>
+      </div>
+      <div class="solution-card fade-up">
+        <div class="solution-num">2</div>
+        <h3 data-i18n="sol2_title">Syringe Prep</h3>
+        <p data-i18n="sol2_desc">Préparation et enregistrement des médicaments à l'avance avec traçabilité complète. Confirmation visuelle de la correspondance prescription-fiole.</p>
+      </div>
+      <div class="solution-card fade-up">
+        <div class="solution-num">3</div>
+        <h3 data-i18n="sol3_title">Administration Tracking</h3>
+        <p data-i18n="sol3_desc">Suivi continu des médicaments administrés au patient. Horodatage automatique et génération de rapports en temps réel.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- How it works -->
+<section class="how-section" id="how">
+  <div class="section-inner">
+    <div class="section-tag" data-i18n="how_tag">FONCTIONNEMENT</div>
+    <div class="section-title fade-up" data-i18n="how_title">Simple. Rapide. Fiable.</div>
+    <div class="section-desc fade-up" data-i18n="how_desc">Intégration en moins de deux semaines, sans modification du flux de travail existant.</div>
+    <div class="steps-grid">
+      <div class="step-card fade-up">
+        <div class="step-num">1</div>
+        <h3 data-i18n="step1_title">Récupérer la fiole</h3>
+        <p data-i18n="step1_desc">Le professionnel récupère le médicament conformément à la prescription.</p>
+      </div>
+      <div class="step-card fade-up">
+        <div class="step-num">2</div>
+        <h3 data-i18n="step2_title">Scanner</h3>
+        <p data-i18n="step2_desc">La fiole est scannée sur la DVI Station en moins de 3 secondes.</p>
+      </div>
+      <div class="step-card fade-up">
+        <div class="step-num">3</div>
+        <h3 data-i18n="step3_title">Vérifier</h3>
+        <p data-i18n="step3_desc">La machine confirme visuellement la correspondance avec la prescription.</p>
+      </div>
+      <div class="step-card fade-up">
+        <div class="step-num">4</div>
+        <h3 data-i18n="step4_title">Tracer</h3>
+        <p data-i18n="step4_desc">Toutes les données sont enregistrées automatiquement pour la traçabilité.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Benefits -->
+<section class="benefits-section" id="benefits">
+  <div class="section-inner">
+    <div class="section-tag" data-i18n="ben_tag">BÉNÉFICES</div>
+    <div class="section-title fade-up" data-i18n="ben_title">Bien plus qu'un outil de vérification</div>
+    <div class="section-desc fade-up" data-i18n="ben_desc">DVI Station apporte une valeur mesurable à l'ensemble de la gestion médicamenteuse de votre clinique.</div>
+    <div class="benefits-grid">
+      <div class="benefit-card fade-up">
+        <div class="benefit-icon b1">🛡</div>
+        <h3 data-i18n="b1_title">Prévention des erreurs</h3>
+        <p data-i18n="b1_desc">Élimination du risque de confusion de médicament ou de dose.</p>
+      </div>
+      <div class="benefit-card fade-up">
+        <div class="benefit-icon b2">📊</div>
+        <h3 data-i18n="b2_title">Traçabilité complète</h3>
+        <p data-i18n="b2_desc">Suivi de bout en bout du médicament, de l'entrée en clinique au rebut.</p>
+      </div>
+      <div class="benefit-card fade-up">
+        <div class="benefit-icon b3">✓</div>
+        <h3 data-i18n="b3_title">Conformité Agrément Canada</h3>
+        <p data-i18n="b3_desc">Respect automatisé des normes de suivi et de gestion des médicaments.</p>
+      </div>
+      <div class="benefit-card fade-up">
+        <div class="benefit-icon b4">🔄</div>
+        <h3 data-i18n="b4_title">Concordance McKesson</h3>
+        <p data-i18n="b4_desc">Rapports précis de consommation vs. commande, prêts pour vérification.</p>
+      </div>
+      <div class="benefit-card fade-up">
+        <div class="benefit-icon b5">🔒</div>
+        <h3 data-i18n="b5_title">Prévention du vol</h3>
+        <p data-i18n="b5_desc">Détection des écarts de narcotiques et substances contrôlées.</p>
+      </div>
+      <div class="benefit-card fade-up">
+        <div class="benefit-icon b6">💰</div>
+        <h3 data-i18n="b6_title">Réduction du gaspillage</h3>
+        <p data-i18n="b6_desc">Optimisation des coûts liés à la gestion des médicaments.</p>
+      </div>
+      <div class="benefit-card fade-up">
+        <div class="benefit-icon b7">📱</div>
+        <h3 data-i18n="b7_title">Digitalisation</h3>
+        <p data-i18n="b7_desc">Remplacement des formulaires papier par un système numérique intégré.</p>
+      </div>
+      <div class="benefit-card fade-up">
+        <div class="benefit-icon b8">📈</div>
+        <h3 data-i18n="b8_title">Rapports automatiques</h3>
+        <p data-i18n="b8_desc">Génération de rapports pour les audits, McKesson et la direction.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="contact">
+  <div class="section-inner">
+    <div class="section-tag" style="color: var(--light-blue);" data-i18n="cta_tag">PASSEZ À L'ACTION</div>
+    <div class="section-title fade-up" data-i18n="cta_title">Prêt à sécuriser votre circuit médicamenteux ?</div>
+    <div class="section-desc fade-up" style="color: #8BA3C0; max-width: 600px; margin: 0 auto 2.5rem;" data-i18n="cta_desc">Demandez une démonstration personnalisée et découvrez comment DVI Station peut s'intégrer dans les opérations de votre clinique.</div>
+    <div class="cta-actions fade-up">
+      <a href="mailto:contact@sononurse.com?subject=Demande de démonstration DVI Station" class="btn-primary" data-i18n="cta_btn1">Demander une démonstration →</a>
+      <a href="https://www.sononurse.com/fr" class="btn-secondary" style="color: var(--light-blue); border-color: rgba(116,210,240,0.3);" data-i18n="cta_btn2">En savoir plus sur SonoNurse</a>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-logo">DVI <span>Station</span></div>
+      <p data-i18n="footer_desc">Une technologie de SonoNurse Inc. — Studio de R&D spécialisé dans les solutions intelligentes pour la sécurité des patients.</p>
+      <p style="margin-top: 1rem;">
+        <a href="mailto:contact@sononurse.com">contact@sononurse.com</a>
+      </p>
+    </div>
+    <div>
+      <h4 data-i18n="footer_product">Produit</h4>
+      <ul class="footer-links">
+        <li><a href="#solution" data-i18n="footer_features">Fonctionnalités</a></li>
+        <li><a href="#how" data-i18n="footer_how">Fonctionnement</a></li>
+        <li><a href="#benefits" data-i18n="footer_benefits">Bénéfices</a></li>
+        <li><a href="#contact" data-i18n="footer_demo">Démonstration</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4 data-i18n="footer_company">Entreprise</h4>
+      <ul class="footer-links">
+        <li><a href="https://www.sononurse.com/fr" data-i18n="footer_sono">SonoNurse Inc.</a></li>
+        <li><a href="mailto:contact@sononurse.com" data-i18n="footer_contact">Contact</a></li>
+      </ul>
+      <p style="margin-top: 2rem; font-size: 0.8rem;">
+        800, rue du Square-Victoria<br>4e étage, bureau 441<br>Montréal, QC H4Z 1C3
+      </p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2026 SonoNurse Inc. <span data-i18n="footer_rights">Tous droits réservés.</span></p>
+  </div>
+</footer>
+
+<script>
+// ===== TRANSLATIONS =====
+const translations = {
+  fr: {
+    nav_problem: "Problématique",
+    nav_solution: "Solution",
+    nav_how: "Fonctionnement",
+    nav_benefits: "Bénéfices",
+    nav_demo: "Demander une démo",
+    hero_badge: "Technologie prête pour le marché",
+    hero_title: 'La sécurité médicamenteuse, <em>réinventée.</em>',
+    hero_desc: "DVI Station automatise la double vérification indépendante au bloc opératoire, assurant une traçabilité complète des médicaments et la conformité réglementaire.",
+    hero_cta1: "Demander une démonstration →",
+    hero_cta2: "Découvrir la solution",
+    hero_card_title: "Vérification en temps réel",
+    hero_card_sub: "Vision par ordinateur",
+    stat1: "Traçabilité", stat2: "Scan & vérification", stat3: "Saisie manuelle", stat4: "Suivi continu",
+    problem_tag: "PROBLÉMATIQUE",
+    problem_title: "Les erreurs médicamenteuses : un risque réel et documenté",
+    problem_desc: "Au bloc opératoire, la double vérification indépendante est rarement réalisée. Les conséquences peuvent être graves.",
+    prob1_title: "Absence de 2e vérificateur", prob1_desc: "Le deuxième professionnel requis pour confirmer le médicament et la dose est rarement disponible au moment critique.",
+    prob2_title: "Confusion de médicaments", prob2_desc: "Les fioles d'anesthésie ont des noms, formes et couleurs similaires, multipliant les risques de confusion.",
+    prob3_title: "Traçabilité manuelle", prob3_desc: "Les formulaires papier et signatures manuelles créent des lacunes dans le suivi et la conformité réglementaire.",
+    sol_tag: "SOLUTION", sol_title: "Trois modes pour couvrir l'ensemble du circuit médicamenteux",
+    sol_desc: "DVI Station s'intègre naturellement dans le flux de travail clinique, sans perturber les pratiques existantes.",
+    sol1_title: "Cart Refill", sol1_desc: "Validation et suivi immédiats des médicaments lors du réapprovisionnement du chariot. Chaque fiole est scannée et vérifiée automatiquement.",
+    sol2_title: "Syringe Prep", sol2_desc: "Préparation et enregistrement des médicaments à l'avance avec traçabilité complète. Confirmation visuelle de la correspondance prescription-fiole.",
+    sol3_title: "Administration Tracking", sol3_desc: "Suivi continu des médicaments administrés au patient. Horodatage automatique et génération de rapports en temps réel.",
+    how_tag: "FONCTIONNEMENT", how_title: "Simple. Rapide. Fiable.",
+    how_desc: "Intégration en moins de deux semaines, sans modification du flux de travail existant.",
+    step1_title: "Récupérer la fiole", step1_desc: "Le professionnel récupère le médicament conformément à la prescription.",
+    step2_title: "Scanner", step2_desc: "La fiole est scannée sur la DVI Station en moins de 3 secondes.",
+    step3_title: "Vérifier", step3_desc: "La machine confirme visuellement la correspondance avec la prescription.",
+    step4_title: "Tracer", step4_desc: "Toutes les données sont enregistrées automatiquement pour la traçabilité.",
+    ben_tag: "BÉNÉFICES", ben_title: "Bien plus qu'un outil de vérification",
+    ben_desc: "DVI Station apporte une valeur mesurable à l'ensemble de la gestion médicamenteuse de votre clinique.",
+    b1_title: "Prévention des erreurs", b1_desc: "Élimination du risque de confusion de médicament ou de dose.",
+    b2_title: "Traçabilité complète", b2_desc: "Suivi de bout en bout du médicament, de l'entrée en clinique au rebut.",
+    b3_title: "Conformité Agrément Canada", b3_desc: "Respect automatisé des normes de suivi et de gestion des médicaments.",
+    b4_title: "Concordance McKesson", b4_desc: "Rapports précis de consommation vs. commande, prêts pour vérification.",
+    b5_title: "Prévention du vol", b5_desc: "Détection des écarts de narcotiques et substances contrôlées.",
+    b6_title: "Réduction du gaspillage", b6_desc: "Optimisation des coûts liés à la gestion des médicaments.",
+    b7_title: "Digitalisation", b7_desc: "Remplacement des formulaires papier par un système numérique intégré.",
+    b8_title: "Rapports automatiques", b8_desc: "Génération de rapports pour les audits, McKesson et la direction.",
+    cta_tag: "PASSEZ À L'ACTION", cta_title: "Prêt à sécuriser votre circuit médicamenteux ?",
+    cta_desc: "Demandez une démonstration personnalisée et découvrez comment DVI Station peut s'intégrer dans les opérations de votre clinique.",
+    cta_btn1: "Demander une démonstration →", cta_btn2: "En savoir plus sur SonoNurse",
+    footer_desc: "Une technologie de SonoNurse Inc. — Studio de R&D spécialisé dans les solutions intelligentes pour la sécurité des patients.",
+    footer_product: "Produit", footer_features: "Fonctionnalités", footer_how: "Fonctionnement", footer_benefits: "Bénéfices", footer_demo: "Démonstration",
+    footer_company: "Entreprise", footer_sono: "SonoNurse Inc.", footer_contact: "Contact",
+    footer_rights: "Tous droits réservés.",
+  },
+  en: {
+    nav_problem: "Problem",
+    nav_solution: "Solution",
+    nav_how: "How it works",
+    nav_benefits: "Benefits",
+    nav_demo: "Request a demo",
+    hero_badge: "Market-ready technology",
+    hero_title: 'Medication safety, <em>reinvented.</em>',
+    hero_desc: "DVI Station automates independent double verification in the operating room, ensuring complete medication traceability and regulatory compliance.",
+    hero_cta1: "Request a demonstration →",
+    hero_cta2: "Discover the solution",
+    hero_card_title: "Real-time verification",
+    hero_card_sub: "Computer vision",
+    stat1: "Traceability", stat2: "Scan & verify", stat3: "Manual entry", stat4: "Continuous tracking",
+    problem_tag: "THE PROBLEM",
+    problem_title: "Medication errors: a real and documented risk",
+    problem_desc: "In the operating room, independent double verification is rarely performed. The consequences can be severe.",
+    prob1_title: "No second verifier", prob1_desc: "The second professional required to confirm the medication and dose is rarely available at the critical moment.",
+    prob2_title: "Drug confusion", prob2_desc: "Anesthesia vials have similar names, shapes and colors, multiplying the risks of confusion.",
+    prob3_title: "Manual traceability", prob3_desc: "Paper forms and manual signatures create gaps in tracking and regulatory compliance.",
+    sol_tag: "SOLUTION", sol_title: "Three modes covering the entire medication circuit",
+    sol_desc: "DVI Station integrates naturally into the clinical workflow without disrupting existing practices.",
+    sol1_title: "Cart Refill", sol1_desc: "Immediate validation and tracking of medications during cart replenishment. Each vial is scanned and verified automatically.",
+    sol2_title: "Syringe Prep", sol2_desc: "Advance preparation and registration of medications with complete traceability. Visual confirmation of prescription-vial match.",
+    sol3_title: "Administration Tracking", sol3_desc: "Continuous monitoring of medications administered to the patient. Automatic timestamping and real-time report generation.",
+    how_tag: "HOW IT WORKS", how_title: "Simple. Fast. Reliable.",
+    how_desc: "Integration in less than two weeks, with no changes to existing workflow.",
+    step1_title: "Retrieve the vial", step1_desc: "The professional retrieves the medication according to the prescription.",
+    step2_title: "Scan", step2_desc: "The vial is scanned on the DVI Station in under 3 seconds.",
+    step3_title: "Verify", step3_desc: "The machine visually confirms the match with the prescription.",
+    step4_title: "Trace", step4_desc: "All data is automatically recorded for traceability.",
+    ben_tag: "BENEFITS", ben_title: "Much more than a verification tool",
+    ben_desc: "DVI Station delivers measurable value across your clinic's entire medication management.",
+    b1_title: "Error prevention", b1_desc: "Elimination of medication or dose confusion risk.",
+    b2_title: "Complete traceability", b2_desc: "End-to-end medication tracking, from clinic entry to disposal.",
+    b3_title: "Accreditation Canada compliance", b3_desc: "Automated compliance with medication tracking and management standards.",
+    b4_title: "McKesson reconciliation", b4_desc: "Precise consumption vs. order reports, ready for verification.",
+    b5_title: "Theft prevention", b5_desc: "Detection of discrepancies in narcotics and controlled substances.",
+    b6_title: "Waste reduction", b6_desc: "Optimization of medication management costs.",
+    b7_title: "Digitalization", b7_desc: "Replacement of paper forms with an integrated digital system.",
+    b8_title: "Automatic reports", b8_desc: "Report generation for audits, McKesson and management.",
+    cta_tag: "TAKE ACTION", cta_title: "Ready to secure your medication circuit?",
+    cta_desc: "Request a personalized demonstration and discover how DVI Station can integrate into your clinic's operations.",
+    cta_btn1: "Request a demonstration →", cta_btn2: "Learn more about SonoNurse",
+    footer_desc: "A technology by SonoNurse Inc. — R&D studio specialized in intelligent solutions for patient safety.",
+    footer_product: "Product", footer_features: "Features", footer_how: "How it works", footer_benefits: "Benefits", footer_demo: "Demonstration",
+    footer_company: "Company", footer_sono: "SonoNurse Inc.", footer_contact: "Contact",
+    footer_rights: "All rights reserved.",
+  }
+};
+
+let currentLang = 'fr';
+
+function setLang(lang) {
+  currentLang = lang;
+  document.documentElement.lang = lang;
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent.trim() === lang.toUpperCase());
+  });
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (translations[lang][key]) {
+      if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+        el.placeholder = translations[lang][key];
+      } else {
+        el.innerHTML = translations[lang][key];
+      }
+    }
+  });
+}
+
+// ===== SCROLL EFFECTS =====
+window.addEventListener('scroll', () => {
+  const nav = document.getElementById('navbar');
+  nav.classList.toggle('scrolled', window.scrollY > 50);
+
+  document.querySelectorAll('.fade-up').forEach(el => {
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight - 80) {
+      el.classList.add('visible');
+    }
+  });
+});
+
+// Smooth scroll for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+
+// Initial check for visible elements
+window.dispatchEvent(new Event('scroll'));
+</script>
+</body>
+</html>
